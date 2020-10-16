@@ -44,12 +44,15 @@
           <el-button type="primary" @click="dataFormSubmit()"
             >保存模板</el-button
           >
-          <el-button type="primary" @click="showSelect">选择部件</el-button>
+          <el-button type="primary" @click="showSelect('','')">选择部件</el-button>
+          <el-button type="primary" @click="showSelect('','left')">左边</el-button>
         </div>
         <div id="tempContent" class="tempContent">
           <div class="left" id="left">
             <!-- <draggable v-model="tplsArr_left" @update="datadragEnd" :option="{group:'people'}"> -->
-            <draggable v-model="tplsArr_left" @update="datadragEnd" v-bind="dragOptions">
+            <draggable v-model="tplsArr_left" @update="datadragEnd"  group="people"  
+         
+          >
                   <transition-group>
               <div
                 v-for="element in tplsArr_left"
@@ -62,7 +65,11 @@
             </draggable>
           </div>
           <div class="right" id="right">
-            <draggable @update="datadragEnd" v-model="tplsArr_right"  v-bind="dragOptions">
+            <!-- <draggable @update="datadragEnd" v-model="tplsArr_right"  v-bind="dragOptions"> -->
+            <draggable @update="datadragEnd1" v-model="tplsArr_right"  group="people"  
+       
+          >
+
               <transition-group>
               <div
                 v-for="element in tplsArr_right"
@@ -91,7 +98,7 @@
         <ul v-for="item in partsTypeList" :key="item.partsId">
           <li>
             <el-radio
-              @change="chooseParts(item)"
+              @change="chooseParts(item,val)"
               style="margin-right: 10px"
               :label="item.partsId"
               v-model="onepart"
@@ -122,7 +129,7 @@ export default {
       visible: false,
       dialogVisible: false,
       radio: 1,
-
+      isLeft:false,
       codeTemp: "",
       dataForm: {
         daTemplatePartsEntityList: [],
@@ -164,12 +171,16 @@ export default {
       },
       dragOptions: {
        
-        group: 'sortlist',
+        name: "tplArr",
+        pull:true,
+        put:true
         
       },
        dragOptions1: {
        
-        group: 'sortlist',
+        name: 'tplArr',
+         pull:true,
+        put:true
         
       },
     };
@@ -183,9 +194,16 @@ export default {
   watch: {
   tplsArr_right(o, n) {
        console.log(this.tplsArr_right);
+       setTimeout(() => {
+          this.setLayout()
+       }, 200);
+      
     },
     tplsArr_left(o,n){
       console.log(this.tplsArr_left);
+      setTimeout(() => {
+          this.setLayout()
+       }, 200);
     }
   },
 
@@ -197,9 +215,20 @@ export default {
       console.log("拖动后的索引 :" + evt.newIndex);
       console.log(this.tplsArr_right,this.tplsArr_left);
     },
-    showSelect() {
+       datadragEnd1(evt) {
+      evt.preventDefault();
+      console.log("拖动前的索引 :" + evt.oldIndex);
+      console.log("拖动后的索引 :" + evt.newIndex);
+      console.log(this.tplsArr_right,this.tplsArr_left);
+    },
+    showSelect(right,left) {
+      this.isLeft=false
+      if(left){
+        console.log("左边");
+        this.isLeft=true
+      }
       this.dialogVisible = true;
-
+      
       //  this.tplsArr_right=[]
     },
 
@@ -231,6 +260,7 @@ export default {
           });
       });
     },
+ 
     getTempData(val) {
       //模板修改时，获取模板信息
       this.dataForm = {
@@ -264,7 +294,7 @@ export default {
     chooseParts(item) {
       commonPartsData = {};
       commonCodeTemp = "";
-      this.params.partsId = item.partsId;
+      this.params.partsId = item.partsId;   
       this.$http({
         url: this.$http.adornUrl("/templateData/addPartsView"),
         method: "GET",
@@ -272,10 +302,18 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           // this.$emit('refreshDataList')
-          this.tplsArr_right.push(data.data);
-          console.log(this.tplsArr_right);
-          // this.partsData = data.data;
-          //  this.codeTemp = data.data.partsInfo.code;
+          // this.tplsArr_right.push(data.data);
+          // console.log(this.tplsArr_right);
+          //  this.tplsArr_left.push(data.data);
+          if(this.isLeft){
+             this.tplsArr_left.push(data.data);
+          }
+          else{
+             this.tplsArr_right.push(data.data);
+          }
+          
+          console.log(this.tplsArr_left.length,"left");
+
         } else {
           this.$message.error(data.msg);
         }
@@ -287,15 +325,48 @@ export default {
       this.dialogVisible = false;
     },
 
-    setLayout() {                                      //布局，将部件挂载到页面
-                                  
-      let rightArr = this.tplsArr_right;
+    setLayout() {       
+      console.log("setLayout");
+         if(this.tplsArr_left.length>0){                          //布局，将部件挂载到页面     
+      console.log(this.tplsArr_left,"添加左边");                         
+      let leftArr = this.tplsArr_left;
+      for (var i = 0; i < leftArr.length; i++) {  
+        var Profile = Vue.extend({
+          template: leftArr[i].partsInfo.code,
+          data: function () {
+            return {
+              partsData: leftArr[i],
+            };
+          },
+          components: {
+            MForm,
+          },
+          mounted() {},
+          watch: {},
+          methods: {
+            deleteParts(val){        
+            leftArr.forEach((item,index)=>{
+              if(item.partsInfo.partsId===val){
 
-      for (var i = 0; i < rightArr.length; i++) {
-        
+                leftArr.splice(index,1)
+
+              }
+            })
+    },
+          },
+        });
+        new Profile().$mount(
+          document
+            .getElementsByClassName("leftDiv")
+            [i].getElementsByTagName("li")[0]
+        );
+      }
+      }
+    else  if(this.tplsArr_right.length>0){
+        let rightArr = this.tplsArr_right;
+      for (var i = 0; i < rightArr.length; i++) {  
         var Profile = Vue.extend({
           template: rightArr[i].partsInfo.code,
-
           data: function () {
             return {
               partsData: rightArr[i],
@@ -308,12 +379,10 @@ export default {
           watch: {},
           methods: {
             deleteParts(val){
-            // console.log(val,"删除");
-            
             rightArr.forEach((item,index)=>{
               if(item.partsInfo.partsId===val){
+
                 rightArr.splice(index,1)
-                console.log(rightArr,"rightArr");
               }
             })
     },
@@ -325,16 +394,12 @@ export default {
             [i].getElementsByTagName("li")[0]
         );
       }
-      var count = document.getElementsByClassName("rightDiv");
-      console.log(count, "count");
+      }    
+    
     },
 
-    // deleteParts(val){
-    //       console.log(val,"删除");
-    // },
-showToast(val){
-console.log("来自构造组件的val");
-},
+   
+
     dataFormSubmit() {
       console.log(this.tplsArr_left, this.tplsArr_right);
       if (this.tplsArr_left.length > 0) {
@@ -358,7 +423,7 @@ console.log("来自构造组件的val");
           });
         });
       }
-      console.log(this.dataForm, "dataForm");
+      // console.log(this.dataForm, "dataForm");
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.visible = false;

@@ -70,6 +70,7 @@ export default {
       tplInfo: {},
       tplsArr_right: [],
       tplsArr_left: [],
+      msg:'',
       dragOptions: {
        
         group: 'sortlist',
@@ -85,8 +86,13 @@ export default {
   computed: {},
   mounted() {
     if (this.$route.query) {
-      //   this.objElement = this.$route.query.objElement
+        // this.msg = this.$route.query.msg
       this.tplInfo = JSON.parse(this.$route.query.templateInfo);
+      
+        //  this.tplInfo = JSON.parse(this.$store.state.previewData);
+  
+      // console.log(this.$store.state.previewData,"this.$store.state.previewData");
+     
       this.tplsArr_right=[]
       // this.show()
       this.dataHandle();
@@ -172,7 +178,8 @@ export default {
   }
   .tempContent {
     border: 1px solid #ccc;
-    width: 100%;
+    width: 70%;
+    margin:0 auto;
     height: calc(100vh - 240px);
     .left {
       //   display: inline-block;

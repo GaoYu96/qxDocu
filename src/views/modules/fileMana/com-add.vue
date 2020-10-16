@@ -72,6 +72,7 @@
             <com-dataSource
               @getPartsTable="getPartsTable"
               :dataList="dataList"
+              ref="comAdd"
             ></com-dataSource>
           </el-tab-pane>
           <el-tab-pane label="展示模板" name="second">
@@ -81,20 +82,7 @@
                 @changeCodeContent="changeCodeContent"
                 ref="codeMirror"
               ></codemirror>
-              <!-- <div>
-       <div style="background-color:#1aa194;">{{partsData.patrs.partsDesc}}<button style="float:right;" @click="deleteParts(item)">删除</button></div>
-       <div v-for="(item,index) in partsData.tableList" :key="index">
-       <div style="background-color:#E6F2FF">{{item.tableInfo.showName}}</div> 
-        <table border="1" cellspacing="0" cellpadding="0" style="background-color:WhiteSmoke">        
-      <tr>
-         <th v-for="(itm,index) in item.colsInfo" :key="index">
-             {{itm.showName}}</th><th><a href="#" style="color:black;">更多</a></th></tr>
-     <tr v-for="(itm,index) in item.colsInfo" :key="index">
-         <td>
-            {{itm.showType}}</td><td><a href="#" style="color:black;">详情</a></td></tr>
-         </table>       
-       </div>
-         </div> -->
+             
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -305,8 +293,11 @@ export default {
     },
     init(_row) {
       this.visible = true;
+      // console.log("here");
+     
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
+         this.$refs.comAdd.clearTbls()
         if (_row) {
           this.dataForm = {
             partsId: _row.partsId,
@@ -334,6 +325,7 @@ export default {
           this.selePartsType = "";
         }
       });
+      // this.$refs.comDataSource.clearTblData()
     },
     saveComData() {
 

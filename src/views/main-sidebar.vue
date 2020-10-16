@@ -33,7 +33,7 @@ export default {
          list:[
           {name: '部件管理', id: 'componentMana', iconClass: 'icon-fangdichandengji'},
           {name: '模板管理', id: 'templateMana', iconClass: 'icon-yinhangkaihu'},
-          {name: '模板', id: 'outport', iconClass: 'icon-yinhangkaihu'},
+          // {name: '模板', id: 'outport', iconClass: 'icon-yinhangkaihu'},
           
         ]},
         {name: '请求日志', id: 'requestDaily', icon: 'fa-telegram'},

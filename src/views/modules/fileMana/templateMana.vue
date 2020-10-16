@@ -111,6 +111,7 @@ export default {
       params:{
            partsId:''
       },
+      msg:'tempPreview',
       tableHeader: [
         {
           key: "templateDesc",
@@ -142,11 +143,12 @@ export default {
       this.$refs.tempCopy.init();
     },
     perview(val){
-
+// console.log(typeof val);
+// this.$store.commit('setPreviewData',JSON.stringify(val))
          const {href} = this.$router.resolve({
         name: 'tempPreview',
         query: {
-          // objElement: this.objElement,
+          // msg: this.msg,
           templateInfo: JSON.stringify(val)
          
         }

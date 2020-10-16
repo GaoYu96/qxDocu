@@ -290,8 +290,18 @@ props:['dataList'],
     this.dataList=[]
     console.log(this.ColDataList,"this.ColDataList");
   },
+  activated(){
+    this.ColDataList=[]
+    this.dataList=[]
+    console.log(this.ColDataList,"activated");
+  },
   methods: {
 
+clearTbls(){
+    //  this.ColDataList=[]
+    this.$set(data, 'ColDataList', []);
+     console.log(this.ColDataList,"afterClear")
+},
 changeStatus(val,num){
          this.listShowNum++
 

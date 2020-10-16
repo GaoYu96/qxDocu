@@ -22,9 +22,13 @@ export default new Vuex.Store({
     isDele:false,
     rightArr:[],
     leftArr:[],
+    previewData:{},
 
   },
   mutations:{
+    setPreviewData(state,val){
+      state.previewData=val
+    },
     setRightArr(state,val){
       state.rightArr=val
     },
