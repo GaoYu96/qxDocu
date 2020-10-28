@@ -208,6 +208,9 @@ showDetail(val){
           this.list[6].labelVal=''
          this.list[6].nameVal=''
 
+},
+test(){
+console.log("test");
 }
 }
 }
