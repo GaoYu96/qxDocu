@@ -264,30 +264,30 @@ export default {
           // this.initLeft()
       });
     },
-    initLeft() {
-      console.log("initleft");
-      var leftFirst = {
-        partsInfo: {
-          code: `<div>aa</div>`,
-          isDelete: "1",
-          isFold: "1",
-          isTitle: "1",
-          objElement: "1",
-          partsDesc: "",
-          partsId: 0,
-          partsType: "list",
-          status: "1",
-        },
-        tableList: [
-          {
-            colsInfo: [],
-            tableInfo: {},
-            values: [],
-          },
-        ],
-      };
-      this.tplsArr_left.push(leftFirst);
-    },
+    // initLeft() {
+    //   console.log("initleft");
+    //   var leftFirst = {
+    //     partsInfo: {
+    //       code: `<div>aa</div>`,
+    //       isDelete: "1",
+    //       isFold: "1",
+    //       isTitle: "1",
+    //       objElement: "1",
+    //       partsDesc: "",
+    //       partsId: 0,
+    //       partsType: "list",
+    //       status: "1",
+    //     },
+    //     tableList: [
+    //       {
+    //         colsInfo: [],
+    //         tableInfo: {},
+    //         values: [],
+    //       },
+    //     ],
+    //   };
+    //   this.tplsArr_left.push(leftFirst);
+    // },
     getTempData(val) {
       //模板修改时，获取模板信息
       this.dataForm = {

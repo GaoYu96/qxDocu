@@ -135,16 +135,16 @@ return {
           sortable: false
         },
         {
-          key: "mark",
-          prop: "mark",
+          key: "operUrl",
+          prop: "operUrl",
           label: "终端标识",
           width: "130",
           fixed: false,
           sortable: false
         },
         {
-          key: "role",
-          prop: "role",
+          key: "operName",
+          prop: "operName",
           label: "请求角色",
           width: "",
           fixed: false,
