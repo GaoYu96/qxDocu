@@ -197,20 +197,17 @@ export default {
     partTypeChange(newVal, oldVal){
       if(newVal){
         this.codeContent = mTemplate[newVal]
-        // console.log(this.codeContent,"this.codeContent");
+
       }
     },
     selePartsType(val) {
-      // this.codeCOntent = "";
-      // this.tempCode();
+
     }
   },
   methods: {
     handleClick(tab, event) {
       if (tab.label === "展示模板") {
-        // this.tempCode();
-        // this.testAppend();
-        // this.$refs.codeMirror.sqlChange();
+
       }
     },
     selectType(val) {
@@ -218,9 +215,9 @@ export default {
       this.$refs.codeMirror.sqlChange();
     },
     changeCodeContent(val) {
-      // console.log(val,"changeCodeContent");
+
       this.dataForm.code = val;
-      // console.log(val, "codemirror");
+
     },
     tempCode() {
       if (this.selePartsType === "list") {
@@ -298,6 +295,7 @@ export default {
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
          this.$refs.comAdd.clearTbls()
+         this.$refs.comAdd.removePId();
         if (_row) {
           this.dataForm = {
             partsId: _row.partsId,
@@ -340,6 +338,7 @@ export default {
         if (data && data.code === 0) {
           this.partsTblPara.partsId = this.partsId = data.partsId;
           this.$store.commit("setPartsId", this.partsId);
+          sessionStorage.setItem('partsId',this.partsId)
           this.$message.success("操作成功");
           this.$emit("refreshDataList");
         } else {

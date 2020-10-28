@@ -84,18 +84,25 @@ export default {
     draggable
   },
   computed: {},
-  mounted() {
+  created() {
     if (this.$route.query) {
+
         // this.msg = this.$route.query.msg
-      this.tplInfo = JSON.parse(this.$route.query.templateInfo);
-      
-        //  this.tplInfo = JSON.parse(this.$store.state.previewData);
+      // this.tplInfo = JSON.parse(this.$route.query.templateInfo);
+     this.tplInfo = JSON.parse(sessionStorage.getItem('previewData')) 
+
+        //  this.tplInfo = this.$store.state.previewData
   
-      // console.log(this.$store.state.previewData,"this.$store.state.previewData");
+      // console.log(this.tplInfo,"this.$store.state.previewData");
      
       this.tplsArr_right=[]
       // this.show()
-      this.dataHandle();
+    //  console.log(this,"this");
+      setTimeout(()=>{
+        this.show() 
+        this.dataHandle();
+      })
+     
     }
   },
   watch: {
@@ -111,7 +118,9 @@ export default {
       console.log(this.tplsArr_right,this.tplsArr_left);
     },
     show() {
-      console.log(this.tplInfo);
+      // console.log(this.tplInfo);
+      var self=this
+      console.log(self.$store.state.previewData.createTime,"this.$store.state.previewData");
     },
     dataHandle() {
       this.tplsArr_right = [];

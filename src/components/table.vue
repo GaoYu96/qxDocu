@@ -206,9 +206,11 @@ export default {
       return 'text-align:center; padding: 0px; '
     },
     sizeChangeHandle(val){
+      // console.log(val);
       this.$emit('sizeChangeHandle', val)
     },
     currentChangeHandle(val){
+      // console.log(val);
       this.$emit('currentChangeHandle', val)
     },
     refreshFun(){

@@ -99,7 +99,7 @@ const baseDataOrMethods = {
     getDataList (_search,seniorParam) {
 
       if(_search){
-        this.pageIndex = 1;
+        this.this.pageConfig.pageIndex = 1;
       }
       this.dataListLoading = true
       let that = this;
@@ -109,8 +109,8 @@ const baseDataOrMethods = {
           url: this.$http.adornUrl(that.listURL),
           method: 'POST',
           data: this.$http.adornData({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
+            'page': this.pageConfig.pageIndex,
+            'limit': this.pageConfig.pageSize,
             'searchCtx': this.dataForm.searchCtx,
             'seniorSql': seniorParam?seniorParam.sql:encrypt.jiami(this.seniorParams.sql),
             'seniorParam': seniorParam?seniorParam.params:encrypt.jiami(this.seniorParams.params),
@@ -126,8 +126,8 @@ const baseDataOrMethods = {
           url: this.$http.adornUrl(that.listURL),
           method: 'POST',
           data: this.$http.adornData({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
+            'page': this.pageConfig.pageIndex,
+            'limit': this.pageConfig.pageSize,
             'searchCtx': this.dataForm.searchCtx
           })
         }).then(({data}) => {
@@ -144,20 +144,20 @@ const baseDataOrMethods = {
     getSeniorDataList (URL,_search,seniorParam) {
         //  console.log(_search,seniorParam);
       if(_search){
-        this.pageIndex = 1;
+        this.this.pageConfig.pageIndex = 1;
       }
       this.dataListLoading = true
       let that = this;
       that.seniorURL=URL
-   console.log(that.seniorURL,"that.seniorURL");
+  //  console.log(that.seniorURL,"that.seniorURL");
     
       if(seniorParam || this.seniorParams && this.seniorParams.sql){ //高级搜索
         this.$http({
           url: this.$http.adornUrl(that.seniorURL),
           method: 'POST',
           data: this.$http.adornData({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
+            'page': this.pageConfig.pageIndex,
+            'limit': this.pageConfig.pageSize,
             'searchCtx': this.dataForm.searchCtx,
             'seniorSql': seniorParam?seniorParam.sql:encrypt.jiami(this.seniorParams.sql),
             'seniorParam': seniorParam?seniorParam.params:encrypt.jiami(this.seniorParams.params),
@@ -173,8 +173,8 @@ const baseDataOrMethods = {
           url: this.$http.adornUrl(that.seniorURL),
           method: 'POST',
           data: this.$http.adornData({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
+            'page': this.pageConfig.pageIndex,
+            'limit': this.pageConfig.pageSize,
             'searchCtx': this.dataForm.searchCtx
           })
         }).then(({data}) => {
@@ -204,15 +204,14 @@ const baseDataOrMethods = {
     // 每页数
     sizeChangeHandle (val) {
       console.log(val);
-      this.pageSize = val
-      this.pageIndex = 1
-    
+      this.pageConfig.pageSize = val
+      this.pageConfig.pageIndex = 1
       this.getDataList()
     },
     // 当前页
     currentChangeHandle (val) {
       console.log(val);
-      this.pageIndex = val
+      this.pageConfig.pageIndex = val
       this.getDataList()
     },
     // 多选

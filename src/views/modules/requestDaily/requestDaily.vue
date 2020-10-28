@@ -31,6 +31,10 @@
         :tableHeader="tableHeader"
         :tableData="dataList"
         :hasIndex="true"
+        :showPage="true"
+         :pageConfig="pageConfig"
+          @sizeChangeHandle="sizeChangeHandle"
+          @currentChangeHandle="currentChangeHandle"
         :hasSelection="true"
         @updateDataListSelections="updateDataListSelections"
         class="tableClass"
@@ -88,7 +92,12 @@ export default {
 data() {
 return {
   listURL:'/sysoperlog/list',
-  // list:[1,2,3,4,5,6,7],
+      pageConfig:{
+        pageIndex: 1,
+        pageSize: 20,
+        totalCount: 0,
+      },
+
   list:[
     {label:'流水号',labelVal:'',name:'请求角色',nameVal:''},
     {label:'单位代码',labelVal:'',name:'单位名称',nameVal:''},

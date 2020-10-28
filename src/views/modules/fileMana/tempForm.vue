@@ -44,40 +44,47 @@
           <el-button type="primary" @click="dataFormSubmit()"
             >保存模板</el-button
           >
-          <el-button type="primary" @click="showSelect('','')">选择部件</el-button>
-          <el-button type="primary" @click="showSelect('','left')">左边</el-button>
+          <el-button type="primary" @click="showSelect('', '')"
+            >选择部件</el-button
+          >
+          <!-- <el-button type="primary" @click="showSelect('', 'left')"
+            >左边</el-button
+          > -->
         </div>
         <div id="tempContent" class="tempContent">
           <div class="left" id="left">
             <!-- <draggable v-model="tplsArr_left" @update="datadragEnd" :option="{group:'people'}"> -->
-            <draggable v-model="tplsArr_left" @update="datadragEnd"  group="people"  
-         
-          >
-                  <transition-group>
-              <div
-                v-for="element in tplsArr_left"
-                :key="element.partsInfo.partsId"
-                class="leftDiv"
-              >
-                <li style="list-style: none"></li>
-              </div>
+            <draggable
+              v-model="tplsArr_left"
+              @update="datadragEnd"
+              group="people"
+            >
+              <transition-group>
+                <div
+                  v-for="element in tplsArr_left"
+                  :key="element.partsInfo.partsId"
+                  class="leftDiv"
+                >
+                  <li style="list-style: none"></li>
+                </div>
               </transition-group>
             </draggable>
           </div>
           <div class="right" id="right">
             <!-- <draggable @update="datadragEnd" v-model="tplsArr_right"  v-bind="dragOptions"> -->
-            <draggable @update="datadragEnd1" v-model="tplsArr_right"  group="people"  
-       
-          >
-
+            <draggable
+              @update="datadragEnd1"
+              v-model="tplsArr_right"
+              group="people"
+            >
               <transition-group>
-              <div
-                v-for="element in tplsArr_right"
-                :key="element.partsInfo.partsId"
-                class="rightDiv"
-              >
-                <li style="list-style: none"></li>
-              </div>
+                <div
+                  v-for="element in tplsArr_right"
+                  :key="element.partsInfo.partsId"
+                  class="rightDiv"
+                >
+                  <li style="list-style: none"></li>
+                </div>
               </transition-group>
             </draggable>
           </div>
@@ -98,7 +105,7 @@
         <ul v-for="item in partsTypeList" :key="item.partsId">
           <li>
             <el-radio
-              @change="chooseParts(item,val)"
+              @change="chooseParts(item, val)"
               style="margin-right: 10px"
               :label="item.partsId"
               v-model="onepart"
@@ -129,7 +136,7 @@ export default {
       visible: false,
       dialogVisible: false,
       radio: 1,
-      isLeft:false,
+      isLeft: false,
       codeTemp: "",
       dataForm: {
         daTemplatePartsEntityList: [],
@@ -170,18 +177,14 @@ export default {
         partsId: "",
       },
       dragOptions: {
-       
         name: "tplArr",
-        pull:true,
-        put:true
-        
+        pull: true,
+        put: true,
       },
-       dragOptions1: {
-       
-        name: 'tplArr',
-         pull:true,
-        put:true
-        
+      dragOptions1: {
+        name: "tplArr",
+        pull: true,
+        put: true,
       },
     };
   },
@@ -192,19 +195,18 @@ export default {
   },
   computed: {},
   watch: {
-  tplsArr_right(o, n) {
-       console.log(this.tplsArr_right);
-       setTimeout(() => {
-          this.setLayout()
-       }, 200);
-      
-    },
-    tplsArr_left(o,n){
-      console.log(this.tplsArr_left);
+    tplsArr_right(o, n) {
+      console.log(this.tplsArr_right, "监测");
       setTimeout(() => {
-          this.setLayout()
-       }, 200);
-    }
+        this.setLayout();
+      }, 200);
+    },
+    tplsArr_left(o, n) {
+      console.log(this.tplsArr_left, "监测");
+      setTimeout(() => {
+        this.setLayout();
+      }, 200);
+    },
   },
 
   mounted() {},
@@ -213,23 +215,24 @@ export default {
       evt.preventDefault();
       console.log("拖动前的索引 :" + evt.oldIndex);
       console.log("拖动后的索引 :" + evt.newIndex);
-      console.log(this.tplsArr_right,this.tplsArr_left);
+      console.log(this.tplsArr_right, this.tplsArr_left);
     },
-       datadragEnd1(evt) {
+    datadragEnd1(evt) {
       evt.preventDefault();
       console.log("拖动前的索引 :" + evt.oldIndex);
       console.log("拖动后的索引 :" + evt.newIndex);
-      console.log(this.tplsArr_right,this.tplsArr_left);
+      console.log(this.tplsArr_right, this.tplsArr_left);
     },
-    showSelect(right,left) {
-      this.isLeft=false
-      if(left){
+    showSelect(right, left) {
+      this.isLeft = false;
+      if (left) {
         console.log("左边");
-        this.isLeft=true
+        this.isLeft = true;
+      } else if (!left) {
+        this.isLeft = false;
       }
       this.dialogVisible = true;
-      
-      //  this.tplsArr_right=[]
+      // this.initLeft();
     },
 
     init(_row) {
@@ -258,9 +261,33 @@ export default {
               this.partsTypeList = data.page.list;
             }
           });
+          // this.initLeft()
       });
     },
- 
+    initLeft() {
+      console.log("initleft");
+      var leftFirst = {
+        partsInfo: {
+          code: `<div>aa</div>`,
+          isDelete: "1",
+          isFold: "1",
+          isTitle: "1",
+          objElement: "1",
+          partsDesc: "",
+          partsId: 0,
+          partsType: "list",
+          status: "1",
+        },
+        tableList: [
+          {
+            colsInfo: [],
+            tableInfo: {},
+            values: [],
+          },
+        ],
+      };
+      this.tplsArr_left.push(leftFirst);
+    },
     getTempData(val) {
       //模板修改时，获取模板信息
       this.dataForm = {
@@ -280,10 +307,9 @@ export default {
           if (data && data.code === 0) {
             // this.$emit('refreshDataList')
             this.tplsArr_right.push(data.data);
-            setTimeout(()=>{
+            setTimeout(() => {
               this.setLayout();
-            },500)
-            
+            }, 500);
           } else {
             this.$message.error(data.msg);
           }
@@ -294,7 +320,7 @@ export default {
     chooseParts(item) {
       commonPartsData = {};
       commonCodeTemp = "";
-      this.params.partsId = item.partsId;   
+      this.params.partsId = item.partsId;
       this.$http({
         url: this.$http.adornUrl("/templateData/addPartsView"),
         method: "GET",
@@ -305,15 +331,13 @@ export default {
           // this.tplsArr_right.push(data.data);
           // console.log(this.tplsArr_right);
           //  this.tplsArr_left.push(data.data);
-          if(this.isLeft){
-             this.tplsArr_left.push(data.data);
-          }
-          else{
-             this.tplsArr_right.push(data.data);
-          }
-          
-          console.log(this.tplsArr_left.length,"left");
-
+          // if (this.isLeft) {
+          //   this.tplsArr_left.push(data.data);
+          // } else {
+          //   this.tplsArr_right.push(data.data);
+          // }
+          this.tplsArr_right.push(data.data);
+          console.log(this.tplsArr_left.length, "left");
         } else {
           this.$message.error(data.msg);
         }
@@ -321,84 +345,80 @@ export default {
     },
 
     add() {
-      this.setLayout();
+      // this.setLayout();
       this.dialogVisible = false;
     },
 
-    setLayout() {       
-      console.log("setLayout");
-         if(this.tplsArr_left.length>0){                          //布局，将部件挂载到页面     
-      console.log(this.tplsArr_left,"添加左边");                         
-      let leftArr = this.tplsArr_left;
-      for (var i = 0; i < leftArr.length; i++) {  
-        var Profile = Vue.extend({
-          template: leftArr[i].partsInfo.code,
-          data: function () {
-            return {
-              partsData: leftArr[i],
-            };
-          },
-          components: {
-            MForm,
-          },
-          mounted() {},
-          watch: {},
-          methods: {
-            deleteParts(val){        
-            leftArr.forEach((item,index)=>{
-              if(item.partsInfo.partsId===val){
-
-                leftArr.splice(index,1)
-
-              }
-            })
-    },
-          },
-        });
-        new Profile().$mount(
-          document
-            .getElementsByClassName("leftDiv")
-            [i].getElementsByTagName("li")[0]
-        );
-      }
-      }
-    else  if(this.tplsArr_right.length>0){
+    setLayout() {
+      console.log(this.tplsArr_left,this.tplsArr_right,"setLayout");
+ if (this.tplsArr_right.length > 0) {
+        console.log(this.tplsArr_right,"添加右边");
         let rightArr = this.tplsArr_right;
-      for (var i = 0; i < rightArr.length; i++) {  
-        var Profile = Vue.extend({
-          template: rightArr[i].partsInfo.code,
-          data: function () {
-            return {
-              partsData: rightArr[i],
-            };
-          },
-          components: {
-            MForm,
-          },
-          mounted() {},
-          watch: {},
-          methods: {
-            deleteParts(val){
-            rightArr.forEach((item,index)=>{
-              if(item.partsInfo.partsId===val){
-
-                rightArr.splice(index,1)
-              }
-            })
-    },
-          },
-        });
-        new Profile().$mount(
-          document
-            .getElementsByClassName("rightDiv")
-            [i].getElementsByTagName("li")[0]
-        );
+        for (var i = 0; i < rightArr.length; i++) {
+          var Profile = Vue.extend({
+            template: rightArr[i].partsInfo.code,
+            data: function () {
+              return {
+                partsData: rightArr[i],
+              };
+            },
+            components: {
+              MForm,
+            },
+            mounted() {},
+            watch: {},
+            methods: {
+              deleteParts(val) {
+                rightArr.forEach((item, index) => {
+                  if (item.partsInfo.partsId === val) {
+                    rightArr.splice(index, 1);
+                  }
+                });
+              },
+            },
+          });
+          new Profile().$mount(
+            document
+              .getElementsByClassName("rightDiv")
+              [i].getElementsByTagName("li")[0]
+          );
+        }
       }
-      }    
-    
+    else  if (this.tplsArr_left.length > 0) {
+        //布局，将部件挂载到页面
+        // console.log(this.tplsArr_left,"添加左边");
+        let leftArr = this.tplsArr_left;
+        for (var i = 0; i < leftArr.length; i++) {
+          var Profile = Vue.extend({
+            template: leftArr[i].partsInfo.code,
+            data: function () {
+              return {
+                partsData: leftArr[i],
+              };
+            },
+            components: {
+              MForm,
+            },
+            mounted() {},
+            watch: {},
+            methods: {
+              deleteParts(val) {
+                leftArr.forEach((item, index) => {
+                  if (item.partsInfo.partsId === val) {
+                    leftArr.splice(index, 1);
+                  }
+                });
+              },
+            },
+          });
+          new Profile().$mount(
+            document
+              .getElementsByClassName("leftDiv")
+              [i].getElementsByTagName("li")[0]
+          );
+        }
+      } 
     },
-
-   
 
     dataFormSubmit() {
       console.log(this.tplsArr_left, this.tplsArr_right);

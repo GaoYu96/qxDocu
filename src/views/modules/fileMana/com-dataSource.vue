@@ -293,14 +293,16 @@ props:['dataList'],
   activated(){
     this.ColDataList=[]
     this.dataList=[]
-    console.log(this.ColDataList,"activated");
+    // console.log(this.ColDataList,"activated");
   },
   methods: {
 
 clearTbls(){
     //  this.ColDataList=[]
-    this.$set(data, 'ColDataList', []);
-     console.log(this.ColDataList,"afterClear")
+    this.$set(this.ColDataList, [], []);
+    this.dataList=[]
+    // this.$set(this.dataList,[],[])
+     console.log(this.dataList,this.ColDataList,"afterClear")
 },
 changeStatus(val,num){
          this.listShowNum++
@@ -368,6 +370,7 @@ changedetailShow(val,num){
       this.resourceTblData.showName = val.desc;
       console.log(val,this.resourceTblData.tblId,"val");
     },
+
     getColData(val) {
           // console.log(val,this.resourceTblData.tblId,"val");
       if(val){
@@ -396,7 +399,7 @@ changedetailShow(val,num){
 
       this.dialogVisible = true;
       this.updateVal=false;
-      if(val){
+      if(val){                                                       //修改部件
         // console.log(val,"val");
         this.updateVal=true
         this.resourceTblData={
@@ -462,12 +465,18 @@ changedetailShow(val,num){
         }
       });
     },
+    removePId(){
+       sessionStorage.removeItem('partsId')
+    },
     dataFormSubmit() {  
       this.dialogVisible = false;
      if(!this.updateVal){
-        this.resourceTblData.partsId=this.$store.state.partsId
+       var id=this.$store.state.partsId
+       console.log(id,"partsId");
+        // this.resourceTblData.partsId=this.$store.state.partsId
+       this.resourceTblData.partsId=sessionStorage.getItem('partsId')
      }
-    //  console.log(this.resourceTblData,this.addCol);
+     console.log(this.resourceTblData);
           this.$http({
         url: this.$http.adornUrl(`/partsTable/${!this.updateVal ? "save" : "update"}`),         
         method: "POST",
@@ -481,6 +490,7 @@ changedetailShow(val,num){
       }).then(({ data }) => {
         if (data && data.code === 0) {
                 this.$emit('getPartsTable')
+                
         } else {
           this.$message.error(data.msg);
         }

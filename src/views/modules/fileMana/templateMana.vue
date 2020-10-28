@@ -145,11 +145,12 @@ export default {
     perview(val){
 // console.log(typeof val);
 // this.$store.commit('setPreviewData',JSON.stringify(val))
+sessionStorage.setItem('previewData',JSON.stringify(val))
          const {href} = this.$router.resolve({
         name: 'tempPreview',
         query: {
-          // msg: this.msg,
-          templateInfo: JSON.stringify(val)
+          msg: this.msg,
+          // templateInfo: JSON.stringify(val)
          
         }
       })
